@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Bezirksamt Fast Appointment</title>
+
+    <script src="Scripts/jquery-2.2.3.min.js"></script>
+    <script src="Scripts/selectize.min.js"></script>
+    <script src="Scripts/controllers/utils.js"></script>
+
+    <link href="css/selectize.css" rel="stylesheet" />
+    <link href="css/selectize.default.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+    <body>
+        <div class="main-container">
+            <div class="main">
+                <header>
+                    <h2>Fast Appointment Selector</h2>
+                </header>
+                <div class="form">
+                    <div class="row">
+                        <label>Select motive of the Appointment</label>
+                        <select id="selDienstleistung" style="min-width: 500px;">
+                            <option value="-1">Select</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <button class="btn" id="btnSearchAppointment">Search Appointments</button>
+                    </div>
+                </div>
+                <div class="form result">
+                    <a id="lnkGotoAppointmentSelector" href="#" target="_blank"></a>
+                </div>
+                <footer>
+                    Copyright 2016
+                </footer>
+            </div>
+        </div>
+
+        <script src="Scripts/controllers/index.js"></script>
+        <script>
+            $(function () {
+                index.init();
+            });
+        </script>
+    </body>
+</html>
