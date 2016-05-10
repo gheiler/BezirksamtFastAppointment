@@ -17,10 +17,11 @@ header.main-header h2 {
 }
 
 .btn {
+    color: #333;
     border: 1px solid #666;
     border-radius: 2px;
     padding: 8px 20px;
-    background: transparent;
+    background: #fcfcfc;
     cursor: pointer;
 }
 .btn[disabled="disabled"] {
@@ -28,6 +29,27 @@ header.main-header h2 {
 }
 .btn.lucky {
     border-color: #516c24;
+    background: rgba(81, 108, 36, 0.07);
+}
+.btn-spinner {
+    margin-left: 20px;
+    margin-top: 0px;
+    height: 9px;
+    width: 9px;
+    animation: rotate 1s infinite linear;
+    border: 3px solid rgba(0, 45, 116, 0.37);
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: block;
+    float: right;
+}
+btn.lucky i.btn-spinner {
+    border-color: rgba(81, 108, 36, 0.32);
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
 }
 
 .form .row.center {
@@ -55,4 +77,11 @@ header.main-header h2 {
     width: 29px;
     height: 29px;
     margin: 0;
+}
+.form.result {
+    margin-bottom: 50px;
+}
+.form.result a {
+    color: #E46BA2;
+    font-size: .9em;
 }

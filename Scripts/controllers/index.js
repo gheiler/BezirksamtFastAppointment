@@ -63,10 +63,12 @@
             });
 
             vm.buttonSearchAppointments.on("click", function () {
+                utils.toggleSpin(vm.buttonSearchAppointments);
                 searchFastestAppointment();
             });
             
             vm.buttonImFeelingLucky.on("click", function () {
+                utils.toggleSpin(vm.buttonImFeelingLucky);
                 imFeelingLucky();
             });
         }
@@ -122,6 +124,7 @@
             vm.linkAppointment.text("Go to select Appointment");
 
             window.open(link);
+            utils.toggleSpin(vm.buttonSearchAppointments);
         }
     }
     
@@ -147,16 +150,20 @@
                             window.open(link);
                             utils.showError("it looks like theres not available hours on the appoitment, you should definetely try clicking the 'Open Appointments Page' button");
                         }
+                        utils.toggleSpin(vm.buttonImFeelingLucky);
                     }).fail(function (err) {
                         console.log(err);
                         utils.showError("there was an error booking the appointment, fast! click the 'Open Appointments Page' button before someone else took your appointment!");
+                        utils.toggleSpin(vm.buttonImFeelingLucky);
                     });
                 } else {
                     utils.showError("it looks like theres not available appoitment, anyway you should try clicking the 'Open Appointments Page' button");
+                    utils.toggleSpin(vm.buttonImFeelingLucky);
                 }
             }).fail(function (err) {
                 console.log(err);
                 utils.showError("there was an error :/ you should try clicking the 'Open Appointments Page' button");
+                utils.toggleSpin(vm.buttonImFeelingLucky);
             });
         }
     }
@@ -187,6 +194,7 @@
             }).fail(function(err) {
                 console.log(err);
                 utils.showError(err);
+                callback();
             });
         }
     }

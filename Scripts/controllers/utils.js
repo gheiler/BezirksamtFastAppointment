@@ -9,5 +9,10 @@ var utils = {
     },
     showError: function(message, type) {
         alert(message);
+    },
+    toggleSpin: function(btn) {
+        $("i", btn).toggleClass("btn-spinner");
     }
 };
+
+
