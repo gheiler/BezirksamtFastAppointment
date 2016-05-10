@@ -52,7 +52,7 @@
         function bindEvents() {
             vm.dienstleistungenSelector.on("change", function () {
                 var newVal = $(this).val();
-                if (newVal != "-1") {
+                if (newVal !== "") {
                     vm.dienstleistung = newVal;
                     vm.buttonSearchAppointments.removeAttr("disabled");
                     vm.buttonImFeelingLucky.removeAttr("disabled");
