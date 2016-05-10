@@ -6,6 +6,7 @@
         createVm();
 
         vm.buttonSearchAppointments.attr("disabled", "disabled");
+        vm.buttonImFeelingLucky.attr("disabled", "disabled");
 
         bindEvents();
 
@@ -15,12 +16,14 @@
             vm = {
                 dienstleistungenSelector: $("#selDienstleistung"),
                 linkAppointment: $("#lnkGotoAppointmentSelector"),
+                linkLucky: $("#lnkLucky"),
                 buttonSearchAppointments: $("#btnSearchAppointment"),
+                buttonImFeelingLucky: $("#btnImFeelingLucky"),
                 dienstleistungen: {
                     key: "dienstleistungen",
                     get: function() {
                         var localDienstleistungen = localStorage.getItem(vm.dienstleistungen.key);
-                        if (localDienstleistungen != null) {
+                        if (localDienstleistungen !== null) {
                             return JSON.parse(localDienstleistungen);
                         }
                         return null;
@@ -33,7 +36,7 @@
                     key: "standOrtenDienstleistung-",
                     get: function () {
                         var localStandOrtenDienstleistung = localStorage.getItem(vm.standOrtenDienstleistung.key + vm.dienstleistung);
-                        if (localStandOrtenDienstleistung != null) {
+                        if (localStandOrtenDienstleistung !== null) {
                             return JSON.parse(localStandOrtenDienstleistung);
                         }
                         return null;
@@ -52,7 +55,9 @@
                 if (newVal != "-1") {
                     vm.dienstleistung = newVal;
                     vm.buttonSearchAppointments.removeAttr("disabled");
+                    vm.buttonImFeelingLucky.removeAttr("disabled");
                 } else {
+                    vm.buttonImFeelingLucky.attr("disabled", "disabled");
                     vm.buttonSearchAppointments.attr("disabled", "disabled");
                 }
             });
@@ -60,11 +65,15 @@
             vm.buttonSearchAppointments.on("click", function () {
                 searchFastestAppointment();
             });
+            
+            vm.buttonImFeelingLucky.on("click", function () {
+                imFeelingLucky();
+            });
         }
     }
 
     function loadDienstleistungen(notForceReload) {
-        if (!notForceReload && vm.dienstleistungen.get() != null) {
+        if (!notForceReload && vm.dienstleistungen.get() !== null) {
             reloadSelect();
         } else {
             $.get(utils.baseServiceUrlWithProxy + "dienstleistungen/", function(html) {
@@ -104,8 +113,57 @@
     }
 
     function searchFastestAppointment(notForceReload) {
-        if (!notForceReload && vm.standOrtenDienstleistung.get() != null) {
-            openAppointment();
+        
+        getStandOrten(openAppointment);        
+
+        function openAppointment() {
+            var link = utils.baseServiceUrl + getAppointmentLinkAction();
+            vm.linkAppointment.attr("href", link);
+            vm.linkAppointment.text("Go to select Appointment");
+
+            window.open(link);
+        }
+    }
+    
+    function imFeelingLucky(){
+        getStandOrten(feelingLucky);
+        
+        function feelingLucky() {
+            $.get(utils.phantomCloudedUrl(utils.baseServiceUrl + getAppointmentLinkAction()), function(html) {
+                var terminPage = $(html);
+                var terminLinks = $(".calendar-month-table a.tagesauswahl", terminPage);
+                if(terminLinks.length > 0) {
+                    var link = $(terminLinks[0]).attr("href");
+                    link = utils.baseServiceUrl + "terminvereinbarung/termin/" + link;
+                    $.get(utils.phantomCloudedUrl(link), function(html) {
+                        var terminHourPage = $(html);
+                        var terminHourLinks = $(".timetable td.frei a", terminHourPage);
+                        if(terminHourLinks.length > 0) {
+                            var luckyLink =  utils.baseServiceUrl + $(terminHourLinks[0]).attr("href");
+                            vm.lnkLucky.attr("href", luckyLink);
+                            vm.lnkLucky.text("Clikc here, you lucky bastard!");
+                            window.open(luckyLink);
+                        } else {                            
+                            window.open(link);
+                            utils.showError("it looks like theres not available hours on the appoitment, you should definetely try clicking the 'Open Appointments Page' button");
+                        }
+                    }).fail(function (err) {
+                        console.log(err);
+                        utils.showError("there was an error booking the appointment, fast! click the 'Open Appointments Page' button before someone else took your appointment!");
+                    });
+                } else {
+                    utils.showError("it looks like theres not available appoitment, anyway you should try clicking the 'Open Appointments Page' button");
+                }
+            }).fail(function (err) {
+                console.log(err);
+                utils.showError("there was an error :/ you should try clicking the 'Open Appointments Page' button");
+            });
+        }
+    }
+    
+    function getStandOrten(callback, notForceReload) {
+        if (!notForceReload && vm.standOrtenDienstleistung.get() !== null) {
+            callback();
         } else {
             $.get(utils.baseServiceUrlWithProxy + "dienstleistung/" + vm.dienstleistung, function(html) {
 
@@ -123,28 +181,22 @@
 
                     standorten.push(itemId);
                 }
-                vm.standOrtenDienstleistung.set(standorten);
-                openAppointment();
+                vm.standOrtenDienstleistung.set(standorten);                
+                callback();
 
             }).fail(function(err) {
                 console.log(err);
                 utils.showError(err);
             });
         }
-
-        function openAppointment() {
-            var link = utils.baseServiceUrl +
-                "terminvereinbarung/termin/tag.php?termin=1&anliegen[]=" + vm.dienstleistung +
-                "&dienstleisterlist=" + vm.standOrtenDienstleistung.get().join() +
-                "&herkunft=FuckYouUglySite";
-
-            vm.linkAppointment.attr("href", link);
-            vm.linkAppointment.text("Go to select Appointment");
-
-            window.open(link);
-        }
     }
-
+    
+    function getAppointmentLinkAction() {
+        return "terminvereinbarung/termin/tag.php?termin=1&anliegen[]=" + vm.dienstleistung +
+               "&dienstleisterlist=" + vm.standOrtenDienstleistung.get().join() +
+               "&herkunft=FuckYouUglySite";
+    }
+    
     return {
         init: init
     };

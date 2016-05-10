@@ -1,4 +1,58 @@
-﻿.main {
+﻿@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+    font-family: 'OpenSans', Helvetica;
+    color: #333;
+    font-size: 16px;
+}
+
+.main-container .main {
     max-width: 940px;
     margin: 0 auto;
+}
+
+header.main-header h2 {
+    text-transform: uppercase;
+    color: #b5050e;
+}
+
+.btn {
+    border: 1px solid #666;
+    border-radius: 2px;
+    padding: 8px 20px;
+    background: transparent;
+    cursor: pointer;
+}
+.btn[disabled="disabled"] {
+    cursor: default;
+}
+.btn.lucky {
+    border-color: #516c24;
+}
+
+.form .row.center {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.form .row {
+    padding-bottom: 20px;
+}
+
+.form .row label {
+    display: block;
+    font-size: .9em;
+    margin-bottom: 2px;
+}
+
+.form .row input {
+    padding: 5px 10px;
+    min-width: 200px;
+}
+.form .row input[type="checkbox"] {
+    padding: inherit;
+    min-width: inherit;    
+    width: 29px;
+    height: 29px;
+    margin: 0;
 }

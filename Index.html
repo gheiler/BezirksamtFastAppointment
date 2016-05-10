@@ -14,22 +14,44 @@
     <body>
         <div class="main-container">
             <div class="main">
-                <header>
+                <header class="main-header">
                     <h2>Fast Appointment Selector</h2>
                 </header>
                 <div class="form">
                     <div class="row">
-                        <label>Select motive of the Appointment</label>
-                        <select id="selDienstleistung" style="min-width: 500px;">
-                            <option value="-1">Select</option>
-                        </select>
+                        <label>Set Email</label>
+                        <input id="txtEmail" type="text" >
                     </div>
                     <div class="row">
-                        <button class="btn" id="btnSearchAppointment">Search Appointments</button>
+                        <label>Set Full Name</label>
+                        <input id="txtFullName" type="text" >
+                    </div>
+                    <div class="row">
+                        <label>For auto selection of appointment you need to have the plugin installed 
+                            <a href="#" target="_blank">Get The plugin</a>.                             
+                            If you are installing it right now, please refresh after installation.
+                        </label>
+                    </div>
+                    <!--<div class="row">
+                        <label>Automatically open new Appointment Site window</label>
+                        <input id="chkAutoOpenAppointment" type="checkbox" checked="checked" >
+                    </div>-->
+                    <div class="row">
+                        <label>Select motive of the Appointment</label>
+                        <select id="selDienstleistung">
+                            <option value="-1"></option>
+                        </select>
+                    </div>
+                    <div class="row center">
+                        <button class="btn" id="btnSearchAppointment">Open Appointments Page</button>
+                        <br />
+                        <br />
+                        <button class="btn lucky" id="btnImFeelingLucky">I'm Feeling Lucky</button>
                     </div>
                 </div>
                 <div class="form result">
-                    <a id="lnkGotoAppointmentSelector" href="#" target="_blank"></a>
+                    <a id="lnkGotoAppointmentSelector" href="#" target="_blank"></a>                    
+                    <a id="lnkLucky" href="#" target="_blank"></a>
                 </div>
                 <footer>
                     Copyright 2016
